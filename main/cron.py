@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, datefmt='%Y-%m-%d %H:%M:%S',
 def Finger_loop():
     uart = ""
     try:
-        uart = PyFingerprint('/dev/ttyS1', 115200, 0xFFFFFFFF, 0x00000000)
+        uart = PyFingerprint('/dev/uart2', 115200, 0xFFFFFFFF, 0x00000000)
 
         if ( uart.verifyPassword() == False ):
             raise ValueError('Указан неверный пароль датчика отпечатка пальца!')
@@ -32,7 +32,7 @@ def Finger_loop():
 def Rfid_loop():
     uart =""
     try:
-        uart = serial.Serial("/dev/ttyS2", baudrate=9600, timeout=3000)
+        uart = serial.Serial("/dev/uart0", baudrate=9600, timeout=3000)
     except Exception as e:
         print('RFID считыватель не может инициализироваться!')
 

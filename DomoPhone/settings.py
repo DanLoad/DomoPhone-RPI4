@@ -24,12 +24,11 @@ SECRET_KEY = '9lxg5(2c(suq(ah!2-m)1o)y@an)nlq575@xz(py27cc-d0&u#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+#AUTH_USER_MODEL = 'main.User'
 ALLOWED_HOSTS = ["192.168.1.101", "127.0.0.1", "127.0.1.1"]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'main',
     'users',
@@ -47,15 +46,15 @@ INSTALLED_APPS = [
 
 # CronTab
 CRONJOBS = [
-    ("* * * * *", 'main.cron.Finger_loop', '>> /home/log/finger_loop.log'),
-    ("* * * * *", 'main.cron.Rfid_loop', '>> /home/log/rfid_loop.log'),
-    ("* * * * *", 'main.cron.RF_loop', '>> /home/log/rf_loop.log'),
-    ("* * * * *", 'main.cron.Init_loop', '>> /home/log/time_loop.log')
+    #("* * * * *", 'main.cron.Finger_loop', '>> /var/log/crontab/finger_loop.log'),
+    ("* * * * *", 'main.cron.Rfid_loop', '>> /var/log/crontab/rfid_loop.log'),
+    #("* * * * *", 'main.cron.RF_loop', '>> /var/log/crontab/rf_loop.log'),
+    #("* * * * *", 'main.cron.Init_loop', '>> /var/log/crontab/time_loop.log')
 ]
-
 WSGI_APPLICATION = 'DomoPhone.wsgi.application'
 CRONTAB_COMMAND_SUFFIX = '2>&1'
 CRONTAB_LOCK_JOBS = True
+
 
 
 MIDDLEWARE = [
@@ -67,6 +66,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'DomoPhone.urls'
 
@@ -86,12 +86,10 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'DomoPhone.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -100,9 +98,9 @@ DATABASES = {
 }
 
 
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -121,16 +119,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
+
 
 # celery
 CELERY_BROKER_URL = 'redis://localhost:6379'
@@ -139,16 +133,14 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 
-CELERY_TASK_ROUTES = {
-    'DomoPhone.Main.tasks.test': {'queue': 'mail', },
-}
-
+"""
 CELERY_BEAT_SCHEDULE = {
     'example-task': {
         'task': 'Main.tasks.test',
         'schedule': 5,  # в секундах, или timedelta(seconds=10)
     },
 }
+"""
 
 
 # Static files (CSS, JavaScript, Images)

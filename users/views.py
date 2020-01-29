@@ -4,12 +4,15 @@ from users.models import *
 from own.models import *
 from users.settings import *
 from settings.models import *
-from users.templates.users.run_db import *
+#from users.templates.users.run_db import *
+from m_rfid.db import *
 import json
+
+from m_rfid.models import *
 
 def index(request):
     if not request.GET:
-        contact = Contact.objects.filter()
+        user = User.objects.filter()
         rfid = Rfid.objects.filter()
         rf = RF.objects.filter()
         finger = Finger.objects.filter()
@@ -17,12 +20,12 @@ def index(request):
 
 def user_owned(request):
     if request.GET and "user" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        _id = request.GET["user"]
+        _id = _id[5:]
+        user = User.objects.get(id = _id)
+        rfid = Rfid.objects.filter(user = _id)
+        #rf = RF.objects.filter(user = _id)
+        #finger = Finger.objects.filter(user = _id)
 
         return render(request, 'users/includes/own_user.html', locals())
     else:
@@ -41,18 +44,18 @@ def all_owned(request):
 
 def Run_rfid(request):
     if request.GET and "start" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        RunStart(user, "rfid", "rec", "no")
+        _id = request.GET["user"]
+        _id = _id[5:]
+        RunStart()
         return HttpResponse("Поднесите RFID метку к считывателю")
     elif request.GET and "stop" == request.GET["cmd"]:
         RunStop()
         return HttpResponse("Отменено")
 
     elif request.GET and "delete" == request.GET["cmd"]:
-        user = request.GET["user"]
+        _id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
+        _id = _id[5:]
         index = index[5:]
 
         contact = Contact.objects.get(id = user)
@@ -65,20 +68,21 @@ def Run_rfid(request):
         return render(request, 'users/includes/own_user.html', locals())
 
     elif request.GET and "activ" == request.GET["cmd"]:
-        user = request.GET["user"]
+        _id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
+        _id = _id[5:]
         index = index[11:]
 
-        RunActiv("rfid", index)
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        RunActiv(index)
+        user = User.objects.get(id = _id)
+        rfid = Rfid.objects.filter(user = _id)
+        #rf = RF.objects.filter(user = _id)
+        #finger = Finger.objects.filter(user = _id)
 
         return render(request, 'users/includes/own_user.html', locals())
 
     elif request.GET and "check" == request.GET["cmd"]:
+        
         status = Status.objects.get(comand = "run")
         if status.status == "rec":
             return HttpResponse('{"cmd": "rec"}')

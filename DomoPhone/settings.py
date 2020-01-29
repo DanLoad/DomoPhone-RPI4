@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'users',
     'own',
     'settings',
+    'm_rfid',
 
     'django_crontab',
     'django.contrib.admin',
@@ -47,7 +48,8 @@ INSTALLED_APPS = [
 # CronTab
 CRONJOBS = [
     #("* * * * *", 'main.cron.Finger_loop', '>> /var/log/crontab/finger_loop.log'),
-    ("* * * * *", 'main.cron.Rfid_loop', '>> /var/log/crontab/rfid_loop.log'),
+    #("* * * * *", 'main.cron.Rfid_loop', '>> /var/log/crontab/rfid_loop.log'),
+    ("* * * * *", 'm_rfid.module.Rfid_loop', '>> /var/log/crontab/rfid_loop.log'),
     #("* * * * *", 'main.cron.RF_loop', '>> /var/log/crontab/rf_loop.log'),
     #("* * * * *", 'main.cron.Init_loop', '>> /var/log/crontab/time_loop.log')
 ]

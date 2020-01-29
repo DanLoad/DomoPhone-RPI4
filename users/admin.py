@@ -1,11 +1,11 @@
 from django.contrib import admin
-from own.models import Rfid, RF, Finger
+from own.models import RF, Finger
 from users.models import Contact
-
+"""
 class RfidInline(admin.TabularInline):
     model = Rfid
     extra = 0
-
+"""
 class RFInline(admin.TabularInline):
     model = RF
     extra = 0
@@ -16,7 +16,7 @@ class FingerInline(admin.TabularInline):
 
 class AdminContact (admin.ModelAdmin):
     list_display = ["name","firstname","lastname", "activ", "email"]
-    inlines = [RfidInline, RFInline, FingerInline]
+    inlines = [ RFInline, FingerInline]
 
     class Meta:
         model = Contact

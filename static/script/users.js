@@ -238,9 +238,9 @@ window.setInterval(function(){
         } else if (comand.cmd == "ok_down") {
           $('#rec_down_info').text(comand.data);
           modules = "no"
-        } else if (comand.cmd == "start") {
+        } else if (comand.cmd == "REC") {                  ///sxdfsdf
           $('#' + modules + '_info').text(comand.data);
-        } else if (comand.cmd == "no") {
+        } else if (comand.cmd == "NO") {                      ///sdfas
           if (modules == "finger") {
             if (comand.step == "error") {
               $('#finger_info').text("Ошибка");
@@ -260,7 +260,7 @@ window.setInterval(function(){
           }
           modules = "no"
         } else if (comand.cmd == "delete" & comand.step == "delete") {
-        } else if (comand.cmd == "save" || comand.cmd == "delete" & comand.step == "ok") {
+        } else if (comand.cmd == "SAVE" || comand.cmd == "delete" & comand.step == "ok") {
           $.get("users/user_owned/", {cmd: 'user', user: $(".btn_active").attr("id") }, function(data) {
              $("#block_all_info").remove();
              $("#block_user_info").remove();

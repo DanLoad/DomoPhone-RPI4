@@ -12,27 +12,32 @@ def RunAccess(value):
         return False
 
 
-def RunSave(value):
+def RunSaveRfid(value):        # Сохранить RFID метку
+    run = Var_rfid.objects.get(name = "USER")
     add = Rfid()
     add.rfid = value
-    add.contact = run.user
+    add.user = run.user
     add.save()
+    return True
 
 
-def RunCheckValue(value):
+def RunCheckRfid(value):   # Проверить есть ли в базе данных эта RFID метка
         list = Rfid.objects.filter(rfid = value)
         quantity = list.count()
         if quantity == 0:
             return True
         else:
-            settings.RFID_PRINT = RunPrint("Метка", value, list)
-            settings.configure(RFID_STATUS="PRINT")
+            print = RunPrint("Метка", value, list)
+            RunChangeVar("PRINT", print)
             return False
+
+
+
 
 def RunPrint(name, value, list):
     text = '<div style=\\"color:red\\">' + name + ': <br/>' + str(value) + "<br/>Принадлежит:"
     for uid in list:
-         text = text + "<br/>" + uid.contact.name + " " + uid.contact.firstname
+         text = text + "<br/>" + uid.user.username + " " + uid.user.first_name
     text = text + "</div>"
     return text
 
@@ -47,24 +52,64 @@ def RunActiv(value):
     bool.save()
 
 
-def RunStart():
-    settings.configure(RFID_STATUS="REC")
-    #run = Status.objects.get(comand = "run")
-    #user = User.objects.get(id = iuser)
-    #run.module = module
-    #run.user = user
-    #run.time = time.time() + timeOver
-    #run.status = status
-    #run.step = step
-    #run.number = " "
-    #if not(status == "up" or status == "down"):
-    #    run.up = 0
-    #    run.down = 0
-    #run.print = " "
-    #run.save()
+def RunChangeVar(var, value):       # Изменить переменную в базе
+    if var == "USER":
+        status = Var_rfid.objects.filter(name = var)
+        user = User.objects.get(id = value)
+        quantity = status.count()
+        if quantity == 0:
+            add = Var_rfid()
+            add.name = var
+            add.user = user
+            add.save()
+        else:
+            status = Var_rfid.objects.get(name = var)
+            status.user = user
+            status.save()
+    else:
+        status = Var_rfid.objects.filter(name = var)
+        quantity = status.count()
+        if quantity == 0:
+            add = Var_rfid()
+            add.name = var
+            add.value = value
+            add.save()
+        else:
+            status = Var_rfid.objects.get(name = var)
+            status.value = value
+            status.save()
 
-def RunStop():
-    settings.configure(RFID_STATUS="STOP")
-    #run = Status.objects.get(comand = "run")
-    #run.status = "stop"
-    #run.save()
+
+def RunCheckVar(var, value):        # Проверить переменную в базе
+    status = Var_rfid.objects.filter(name = var)
+    quantity = status.count()
+    if quantity == 0:
+        add = Var_rfid()
+        add.name = var
+        add.value = "NEW"
+        add.save()
+        return False
+    else:
+        status = Var_rfid.objects.get(name = var)
+        if status.value == value:
+            return True
+        else:
+            return False
+
+def RunShowVar(var):        # Показать переменную из базы
+    status = Var_rfid.objects.filter(name = var)
+    quantity = status.count()
+    if quantity == 0:
+        add = Var_rfid()
+        add.name = var
+        add.value = "NEW"
+        add.save()
+        return "NEW"
+    else:
+        status = Var_rfid.objects.get(name = var)
+        return status.value
+
+
+def RunDeleteRfid(value):
+    rfid = Rfid.objects.get(id = value)
+    rfid.delete()

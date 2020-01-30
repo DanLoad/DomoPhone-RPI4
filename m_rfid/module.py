@@ -1,13 +1,9 @@
 from serial import Serial
 from m_rfid.db import *
-#from m_rfid import settings
-#from m_rfid.module import *
 import logging
 import time
 import re
 
-from django.conf import settings
-from m_rfid import my_settings
 
 timePause = 0;
 
@@ -30,7 +26,6 @@ def Rfid_loop():
         if ser.is_open:
             if ser.in_waiting > 0:
                 value = ""
-                settings.configure(my_settings, RFID_STATUS="DDE")
                 try:
                     read_byte = ser.read()
                 except:
@@ -48,85 +43,30 @@ def Rfid_loop():
                         value = value + read_add.decode('utf8')
                     logging.info(value)
                     if re.match("^[A-Za-z0-9]*$", value):
-                        logging.info(settings.RFID_STATUS)
                         global timePause
 
-                        if settings.RFID_STATUS == "REC":
-                            dd
-                            # logging.info(RunCheckValue("rfid", value))
+                        if RunCheckVar("STATUS", "REC"):
+                            if RunCheckRfid(value):
+                                RunSaveRfid(value)
+                                RunChangeVar("STATUS", "SAVE")
+                                logging.info("save >>>>>>>>>>")
 
-                            if RunCheckValue(value):
-                                if RunSave(value):
-                                    settings.configure(my_settings, RFID_STATUS="SAVE")
-                                else:
-                                    ser.flushInput()
+                                aa
+                            else:
+                                RunChangeVar("STATUS", "NO")
+                                logging.info("NOOOOO save >>>>>>>>>>")
+                                ser.flushInput()
+                                ss
 
                         elif time.time() > timePause:
                             if RunAccess(value):
                                 logging.info("Open door >>>>>>>>>>")
-                                rt
                                 timePause = time.time() + 1
+                                dd
                             else:
                                 logging.info("no open door >>>>>>>>>>>")
-                                gt
+                                ff
                         else:
                             ser.flushInput()
                     else:
                         ser.flushInput()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        """
-                        if RunAccess("rfid", value):
-                            logging.info("Open door >>>>>>>>>>")
-                            rt
-                            timePause = time.time() + 1
-                        else:
-                            logging.info("no open door >>>>>>>>>>>")
-                            gt
-
-
-
-
-
-                        if settings.RFID_STATUS == REC:
-                            # logging.info(RunCheckValue("rfid", value))
-
-                            if RunCheckValue("rfid", value):
-                                RunSave("rfid", value)
-                        elif time.time() > timePause:
-                            if RunAccess("rfid", value):
-                                logging.info("Open door >>>>>>>>>>")
-                                rt
-                                timePause = time.time() + 1
-                            else:
-                                logging.info("no open door >>>>>>>>>>>")
-                                gt
-                        else:
-                            ser.flushInput()
-                    else:
-                        ser.flushInput()
-
-
-                        """

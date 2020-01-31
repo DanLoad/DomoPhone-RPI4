@@ -343,7 +343,7 @@ GPIO13 = RXD5 -> ttyAMA4
 |---|:-------------|
 | $ | sudo -H pip3 install --upgrade luma.oled |
 
-[Библиотека] (https://luma-oled.readthedocs.io/en/latest/intro.html)
+[Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
 
 ## Полезные ссылки:
 

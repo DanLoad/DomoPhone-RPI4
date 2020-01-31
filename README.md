@@ -361,6 +361,8 @@ GPIO13 = RXD5 -> ttyAMA4
 | $ | cd luma.examples/examples |
 |---|:-------------|
 | $ | python3 3d_box.py |
+
+[Подробнее](https://github.com/rm-hull/luma.examples)
  
 [Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
 

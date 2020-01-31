@@ -301,6 +301,40 @@ def xsum(numbers):
 | $ | sudo pip3 install RPi.GPIO |
 |---|:-------------|
 
+Открытие портов UART yf RPI4:
+
+Заходим в меню sudo __raspi-config --> 5 --> P6__ Жмем NO потом YES
+
+Заходим в файл __boot/config.txt__ и добавляем в раздел __[all]__
+```python
+dtoverlay=uart2
+dtoverlay=uart3
+dtoverlay=uart4
+dtoverlay=uart5
+```
+Открыть только нужные интерфейсы
+```python
+GPIO14 = TXD0 -> ttyS0
+GPIO15 = RXD0 -> ttyS0
+
+Не использовать
+GPIO0  = TXD2 -> ttyAMA1
+GPIO1  = RXD2 -> ttyAMA1
+
+GPIO4  = TXD3 -> ttyAMA2
+GPIO5  = RXD3 -> ttyAMA2
+
+GPIO8  = TXD4 -> ttyAMA3
+GPIO9  = RXD4 -> ttyAMA3
+
+GPIO12 = TXD5 -> ttyAMA4
+GPIO13 = RXD5 -> ttyAMA4
+```
+и перезагружаем:
+
+| $ | sudo reboot |
+|---|:-------------|
+
 ## Полезные ссылки:
 
 [Установка Celery c Django](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)

@@ -335,6 +335,16 @@ GPIO13 = RXD5 -> ttyAMA4
 | $ | sudo reboot |
 |---|:-------------|
 
+## Библиотека для дисплея
+
+установка:
+
+| $ | sudo apt install libfreetype6-dev libjpeg-dev build-essential libopenjp2-7 libtiff5 |
+|---|:-------------|
+| $ | sudo -H pip3 install --upgrade luma.oled |
+
+[Библиотека] (https://luma-oled.readthedocs.io/en/latest/intro.html)
+
 ## Полезные ссылки:
 
 [Установка Celery c Django](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)

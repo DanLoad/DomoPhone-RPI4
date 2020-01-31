@@ -360,7 +360,7 @@ GPIO13 = RXD5 -> ttyAMA4
 
 | $ | cd luma.examples/examples |
 |---|:-------------|
-| $ | python3 3d_box.py |
+| $ | python3 3d_box.py --display ssd1309 --interface spi, -i spi |
 
 [Подробнее](https://github.com/rm-hull/luma.examples)
  

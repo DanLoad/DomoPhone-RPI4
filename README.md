@@ -353,7 +353,7 @@ GPIO13 = RXD5 -> ttyAMA4
 
 Установите библиотеки luma, используя:
 
-| $ | sudo -H pip install -e |
+| $ | sudo -H pip3 install -e . |
 |---|:-------------|
 
 Запуск примеров:

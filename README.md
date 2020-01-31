@@ -126,12 +126,29 @@ Guest ok = yes
 
 Открываем доступ папкам:
 
+| $ | cd /var/www |
+|---|:-------------|
+| $ | chmod 664 ./DomoPhone/db.sqlite3 |
+| $ | chmod 775 ./DomoPhone |
+
+Теперь надо дать группе www-data права:
+
+| $ | sudo chown :www-data ./DomoPhone/db.sqlite3 |
+|---|:-------------|
+| $ | sudo chown :www-data ./DomoPhone |
+
+Папкам:
+
 | $ | sudo chmod -R 777 /home |
 |---|:-------------|
-| $ | sudo chmod -R 777 /var/www |
+| $ | sudo chmod -R 777 /var/www/log |
+
+
+
 
 Настроим наш проект:
 В wsgi.py вставить:
+
 
 ```python
 """

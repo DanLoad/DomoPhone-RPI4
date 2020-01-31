@@ -339,10 +339,29 @@ GPIO13 = RXD5 -> ttyAMA4
 
 установка:
 
-| $ | sudo apt install libfreetype6-dev libjpeg-dev build-essential libopenjp2-7 libtiff5 |
+| $ | sudo apt install python3-dev python3-pip libfreetype6-dev libjpeg-dev build-essential libopenjp2-7 libtiff5 |
 |---|:-------------|
 | $ | sudo -H pip3 install --upgrade luma.oled |
+| $ | sudo usermod -a -G i2c,spi,gpio pi |
+| $ | sudo apt install libsdl-dev libportmidi-dev libsdl-ttf2.0-dev libsdl-mixer1.2-dev libsdl-image1.2-dev |
 
+ Клонируйте этот репозиторий:
+ 
+| $ | git clone https://github.com/rm-hull/luma.examples.git |
+|---|:-------------|
+| $ | cd luma.examples |
+
+Установите библиотеки luma, используя:
+
+| $ | sudo -H pip install -e |
+|---|:-------------|
+
+Запуск примеров:
+
+| $ | cd examples |
+|---|:-------------|
+| $ | python3 3d_box.py |
+ 
 [Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
 
 ## Полезные ссылки:

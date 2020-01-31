@@ -358,7 +358,7 @@ GPIO13 = RXD5 -> ttyAMA4
 
 Запуск примеров:
 
-| $ | cd examples |
+| $ | cd luma.examples/examples |
 |---|:-------------|
 | $ | python3 3d_box.py |
  

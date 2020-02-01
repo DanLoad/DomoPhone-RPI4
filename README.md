@@ -126,12 +126,29 @@ Guest ok = yes
 
 Открываем доступ папкам:
 
+| $ | cd /var/www |
+|---|:-------------|
+| $ | chmod 664 ./DomoPhone/db.sqlite3 |
+| $ | chmod 775 ./DomoPhone |
+
+Теперь надо дать группе www-data права:
+
+| $ | sudo chown :www-data ./DomoPhone/db.sqlite3 |
+|---|:-------------|
+| $ | sudo chown :www-data ./DomoPhone |
+
+Папкам:
+
 | $ | sudo chmod -R 777 /home |
 |---|:-------------|
-| $ | sudo chmod -R 777 /var/www |
+| $ | sudo chmod -R 777 /var/www/log |
+
+
+
 
 Настроим наш проект:
 В wsgi.py вставить:
+
 
 ```python
 """
@@ -283,6 +300,111 @@ def xsum(numbers):
 
 | $ | sudo pip3 install RPi.GPIO |
 |---|:-------------|
+
+Открытие портов UART yf RPI4:
+
+Заходим в меню sudo __raspi-config --> 5 --> P6__ Жмем NO потом YES
+
+Заходим в файл __boot/config.txt__ и добавляем в раздел __[all]__
+```python
+dtoverlay=uart2
+dtoverlay=uart3
+dtoverlay=uart4
+dtoverlay=uart5
+```
+Открыть только нужные интерфейсы
+```python
+GPIO14 = TXD0 -> ttyS0
+GPIO15 = RXD0 -> ttyS0
+
+Не использовать
+GPIO0  = TXD2 -> ttyAMA1
+GPIO1  = RXD2 -> ttyAMA1
+
+GPIO4  = TXD3 -> ttyAMA2
+GPIO5  = RXD3 -> ttyAMA2
+
+GPIO8  = TXD4 -> ttyAMA3
+GPIO9  = RXD4 -> ttyAMA3
+
+GPIO12 = TXD5 -> ttyAMA4
+GPIO13 = RXD5 -> ttyAMA4
+```
+и перезагружаем:
+
+| $ | sudo reboot |
+|---|:-------------|
+
+## Библиотека для дисплея
+
+установка:
+
+| $ | sudo apt install python3-dev python3-pip libfreetype6-dev libjpeg-dev build-essential libopenjp2-7 libtiff5 |
+|---|:-------------|
+| $ | sudo -H pip3 install --upgrade luma.oled |
+| $ | sudo usermod -a -G i2c,spi,gpio pi |
+| $ | sudo apt install libsdl-dev libportmidi-dev libsdl-ttf2.0-dev libsdl-mixer1.2-dev libsdl-image1.2-dev |
+
+ Клонируйте этот репозиторий:
+
+| $ | git clone https://github.com/rm-hull/luma.examples.git |
+|---|:-------------|
+| $ | cd luma.examples |
+
+Установите библиотеки luma, используя:
+
+| $ | sudo -H pip3 install -e . |
+|---|:-------------|
+
+Запуск примеров:
+
+| $ | cd luma.examples/examples |
+|---|:-------------|
+| $ | python3 3d_box.py --display ssd1309 --interface spi, -i spi |
+
+[Подробнее](https://github.com/rm-hull/luma.examples)
+
+[Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
+## Пины:
+
+__Дисплей:__
+
+| Display      | --> | Raspberry PI4 |
+|:------------:|:---:|:-------------:|
+
+| PIN | --> | PIN | GPIO | SPI       |
+|:---:|:---:|:---:|:----:|:---------:|
+| CS  | --> | 24 | 8     | SPI0_CE0  |
+| DC  | --> | 18 | 24    |           |
+| RES | --> | 22 | 25    |           |
+| SDA | --> | 19 | 9     | SPI0_MOSI |
+| SCL | --> | 23 | 11    | SPI0_CLK  |
+| VCC | --> | 1  |       | +3.3V     |
+| GND | --> | 25 |       | GND       |
+
+__Считыватель меток:__
+
+| RFID         | --> | Raspberry PI4 |
+|:------------:|:---:|:-------------:|
+
+| PIN | --> | PIN | GPIO | SPI       |
+|:---:|:---:|:---:|:----:|:---------:|
+| TX  | --> | 10  | 15   | RXD0_UART |
+| RX  | --> | 8   | 14   | TXD0_UART |
+| VCC | --> | 4   |      | +5.0V     |
+| GND | --> | 6   |      | GND       |
+
+__Датчик отпечатков пальца:__
+
+| Finger       | --> | Raspberry PI4 |
+|:------------:|:---:|:-------------:|
+
+| PIN |      COLOR      | --> | PIN | GPIO | SPI       |
+|:---:|:---------------:|:---:|:---:|:----:|:---------:|
+| TX  |      BLUE       | --> | 33  | 13   | RXD5_UART |
+| RX  |      GREEN      | --> | 32  | 12   | TXD5_UART |
+| VCC | BLACK and WHITE | --> | 1   |      | +3.3V     |
+| GND |     YELLOW      | --> | 34   |      | GND       |
 
 ## Полезные ссылки:
 

@@ -346,7 +346,7 @@ GPIO13 = RXD5 -> ttyAMA4
 | $ | sudo apt install libsdl-dev libportmidi-dev libsdl-ttf2.0-dev libsdl-mixer1.2-dev libsdl-image1.2-dev |
 
  Клонируйте этот репозиторий:
- 
+
 | $ | git clone https://github.com/rm-hull/luma.examples.git |
 |---|:-------------|
 | $ | cd luma.examples |
@@ -363,7 +363,7 @@ GPIO13 = RXD5 -> ttyAMA4
 | $ | python3 3d_box.py --display ssd1309 --interface spi, -i spi |
 
 [Подробнее](https://github.com/rm-hull/luma.examples)
- 
+
 [Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
 ## Пины:
 

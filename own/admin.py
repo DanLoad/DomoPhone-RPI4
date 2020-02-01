@@ -1,5 +1,5 @@
 from django.contrib import admin
-from own.models import RF, Finger
+from own.models import RF
 """
 class AdminRfid (admin.ModelAdmin):
     list_display = ["contact","rfid","activ"]
@@ -20,7 +20,7 @@ class AdminRF (admin.ModelAdmin):
 
 admin.site.register(RF, AdminRF)
 
-
+"""
 class AdminFinger (admin.ModelAdmin):
     list_display = ["contact","number","finger","activ"]
     list_filter = ['contact']
@@ -29,3 +29,4 @@ class AdminFinger (admin.ModelAdmin):
         model = Finger
 
 admin.site.register(Finger, AdminFinger)
+"""

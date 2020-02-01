@@ -1,5 +1,5 @@
 from django.contrib import admin
-from own.models import RF, Finger
+from own.models import RF
 from users.models import Contact
 """
 class RfidInline(admin.TabularInline):
@@ -9,14 +9,14 @@ class RfidInline(admin.TabularInline):
 class RFInline(admin.TabularInline):
     model = RF
     extra = 0
-
+"""
 class FingerInline(admin.TabularInline):
     model = Finger
     extra = 0
-
+"""
 class AdminContact (admin.ModelAdmin):
     list_display = ["name","firstname","lastname", "activ", "email"]
-    inlines = [ RFInline, FingerInline]
+    inlines = [ RFInline ]
 
     class Meta:
         model = Contact

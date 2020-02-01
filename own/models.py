@@ -20,7 +20,7 @@ class RF(models.Model):
     def __str__(self):
         return str(self.contact.id)
 
-
+"""
 class Finger(models.Model):
     contact = models.ForeignKey(Contact, blank=True, null=True, default=None, on_delete=models.CASCADE)
     number = models.DecimalField(blank=True, default=0, max_digits=15, decimal_places=0)
@@ -29,3 +29,4 @@ class Finger(models.Model):
 
     def __str__(self):
         return str(self.contact.id)
+"""

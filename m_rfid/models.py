@@ -1,5 +1,4 @@
 from django.db import models
-from users.models import Contact
 from django.contrib.auth.models import User
 
 class Rfid(models.Model):

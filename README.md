@@ -367,7 +367,9 @@ GPIO13 = RXD5 -> ttyAMA4
 [Библиотека](https://luma-oled.readthedocs.io/en/latest/intro.html)
 ## Пины:
 
-| Finger Print | --> | Raspberry PI4 |
+#Дисплей:
+
+| Display | --> | Raspberry PI4 |
 |:------------:|:---:|:-------------:|
 
 | PIN | --> | PIN | GPIO | SPI |
@@ -379,6 +381,18 @@ GPIO13 = RXD5 -> ttyAMA4
 | SCL | --> | 23 | 11 | SPI0_CLK |
 | VCC | --> | 1  | | +3.3V |
 | GND | --> | 25 | | GND |
+
+#RFID:
+
+| RFID | --> | Raspberry PI4 |
+|:------------:|:---:|:-------------:|
+
+| PIN | --> | PIN | GPIO | SPI |
+|:---:|:---:|:---:|:----:|:---:|
+| TX  | --> | 10 | 15  | RXD0_UART |
+| RX  | --> | 8 | 14 | TXD0_UART |
+| VCC | --> | 4  | | +5.0V |
+| GND | --> | 6  | | GND |
 
 ## Полезные ссылки:
 

@@ -14,14 +14,7 @@ def RunAccess(value):
 
 
 
-def RunActiv(value):
-    bool = Rfid.objects.get(id = value)
 
-    if bool.activ:
-        bool.activ = False
-    else:
-        bool.activ = True
-    bool.save()
 
 
 
@@ -63,7 +56,7 @@ def RunCheckRfid(value):   # Проверить есть ли в базе дан
 
 
 
-def RunCheckFinger(value):
+def FingerCheck(value):
     list = Finger.objects.filter(number = value)
     quantity = list.count()
     if quantity == 0:
@@ -74,7 +67,7 @@ def RunCheckFinger(value):
         RunChangeVar("PRINT", RunPrint("Номер", value, list))
         return True
 # Принт
-def RunPrint(name, value, list):
+def FingerPrint(name, value, list):
     text = '<div style=\\"color:red\\">' + name + ': <br/>' + str(value) + "<br/>Принадлежит:"
     for uid in list:
          text = text + "<br/>" + uid.user.username + " " + uid.user.first_name
@@ -82,14 +75,14 @@ def RunPrint(name, value, list):
     return text
 
 #Ищет свободный идентификатор для отпечатка
-def RunFree():
+def FingerFree():
     fin = Finger.objects.all()
     for place in range(6):
         if not(any(place == id.number for id in fin)):
             return place
     return "FULL"
 
-def RunCheckVar(var, value):        # Проверить переменную в базе
+def FingerCheckVar(var, value):        # Проверить переменную в базе
     status = Var_finger.objects.filter(name = var)
     quantity = status.count()
     if quantity == 0:
@@ -106,7 +99,7 @@ def RunCheckVar(var, value):        # Проверить переменную в
             return False
 
 
-def RunChangeVar(var, value):       # Изменить переменную в базе
+def FingerChangeVar(var, value):       # Изменить переменную в базе
     if var == "USER":
         status = Var_finger.objects.filter(name = var)
         user = User.objects.get(id = value)
@@ -134,7 +127,7 @@ def RunChangeVar(var, value):       # Изменить переменную в �
             status.save()
 
 
-def RunSaveFinger(value):    # Сохранить Finger метку
+def FingerSave(value):    # Сохранить Finger метку
         add = Finger()
         add.finger = value
         add.number = value
@@ -142,3 +135,12 @@ def RunSaveFinger(value):    # Сохранить Finger метку
         add.save()
         RunChangeVar("STATUS", "SAVE")
         RunChangeVar("STEP", "YES")
+
+
+def FingerActiv(value):
+    bool = Finger.objects.get(id = value)
+    if bool.activ:
+        bool.activ = False
+    else:
+        bool.activ = True
+    bool.save()

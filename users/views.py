@@ -5,9 +5,11 @@ from own.models import *
 from users.settings import *
 from settings.models import *
 #from users.templates.users.run_db import *
-from m_rfid.db import *
 import json
+from m_rfid.db import *
+from m_finger.db import *
 from m_rfid.models import *
+from m_finger.models import *
 
 
 
@@ -20,15 +22,42 @@ def index(request):
         return render(request, 'users/users.html', locals())
 
 
+def change_user(request, user_id="0"):
+    if not request.GET:
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(user = _id)
+        finger = Finger.objects.filter(user = user_id)
+        return render(request, 'users/includes/change_user.html', locals())
+
+
+def add_finger(request):
+    if request.GET and "user" == request.GET["cmd"]:
+        user_id = request.GET["user"]
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(user = _id)
+        finger = Finger.objects.filter(user = user_id)
+        return render(request, 'm_finger/add_finger.html', locals())
+
+def user_activ(request):
+    if request.GET and "user" == request.GET["cmd"]:
+        user_id = request.GET["user"]
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(user = _id)
+        finger = Finger.objects.filter(user = user_id)
+        return render(request, 'users/includes/user_activ.html', locals())
+
+
 
 def user_owned(request):
     if request.GET and "user" == request.GET["cmd"]:
-        _id = request.GET["user"]
-        _id = _id[5:]
-        user = User.objects.get(id = _id)
-        rfid = Rfid.objects.filter(user = _id)
+        user_id = request.GET["user"]
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
         #rf = RF.objects.filter(user = _id)
-        #finger = Finger.objects.filter(user = _id)
+        finger = Finger.objects.filter(user = user_id)
         return render(request, 'users/includes/own_user.html', locals())
     else:
         pass
@@ -37,7 +66,7 @@ def user_owned(request):
 
 def all_owned(request):
     if request.GET and "all" == request.GET["cmd"]:
-        contact = Contact.objects.filter()
+        user = User.objects.filter()
         rfid = Rfid.objects.filter()
         rf = RF.objects.filter()
         finger = Finger.objects.filter()
@@ -47,55 +76,65 @@ def all_owned(request):
         pass
 
 
+def all_name(request):
+    if request.GET and "all" == request.GET["cmd"]:
+        user = User.objects.filter()
+        rfid = Rfid.objects.filter()
+        rf = RF.objects.filter()
+        finger = Finger.objects.filter()
+        return render(request, 'users/includes/info_user.html', locals())
+    else:
+        pass
+
+
 
 def Run_rfid(request):
 
     if request.GET and "start" == request.GET["cmd"]:
-        _id = request.GET["user"]
-        _id = _id[5:]
-        RunChangeVar("STATUS", "REC")
-        RunChangeVar("USER", _id)
+        user_id = request.GET["user"]
+        user_id = user_id[5:]
+        RfidChangeVar("STATUS", "REC")
+        RfidChangeVar("USER", user_id)
         return HttpResponse("Поднесите RFID метку к считывателю")
+
+
+
     elif request.GET and "stop" == request.GET["cmd"]:
-        RunChangeVar("STATUS", "STOP")
+        RfidChangeVar("STATUS", "STOP")
         return HttpResponse("Отменено")
 
 
 
     elif request.GET and "delete" == request.GET["cmd"]:
-        _id = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        _id = _id[5:]
-        index = index[5:]
-        user = User.objects.get(id = _id)
-        rfid = Rfid.objects.filter(user = _id)
-        #rf = RF.objects.filter(contact = _id)
-        #finger = Finger.objects.filter(contact = _id)
-        RunDeleteRfid(index)
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(contact = user_id)
+        finger = Finger.objects.filter(contact = user_id)
+        RfidDelete(index)
         return render(request, 'users/includes/own_user.html', locals())
 
 
 
     elif request.GET and "activ" == request.GET["cmd"]:
-        _id = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        _id = _id[5:]
-        index = index[11:]
-        RunActiv(index)
-        user = User.objects.get(id = _id)
-        rfid = Rfid.objects.filter(user = _id)
+        RfidActiv(index)
+        user = User.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
         #rf = RF.objects.filter(user = _id)
-        #finger = Finger.objects.filter(user = _id)
-        return render(request, 'users/includes/own_user.html', locals())
+        finger = Finger.objects.filter(user = user_id)
+        return render(request, 'users/includes/user_activ.html', locals())
 
 
 
     elif request.GET and "check" == request.GET["cmd"]:
-        status = RunShowVar("STATUS")
+        status = RfidShowVar("STATUS")
         if status == "REC":
             return HttpResponse('{"cmd": "REC"}')
         elif status == "NO":
-            return HttpResponse('{"cmd": "NO", "data": "' + RunShowVar("PRINT") + '"}')
+            return HttpResponse('{"cmd": "NOT", "data": "' + RfidShowVar("PRINT") + '"}')
         elif status == "TIME":
             return HttpResponse('{"cmd": "TIME"}')
         elif status == "SAVE":
@@ -108,9 +147,9 @@ def Run_rfid(request):
 def Run_rf(request):
 
     if request.GET and "open" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        RunStart(user, "rf", "open", "no")
+        user_id = request.GET["user"]
+        user_id = user_id[5:]
+        RunStart(user_id, "rf", "open", "no")
         return HttpResponse("ok")
 
 
@@ -122,31 +161,29 @@ def Run_rf(request):
 
 
     elif request.GET and "delete" == request.GET["cmd"]:
-        user = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
-        index = index[3:]
         RunDelete("rf", index)
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        contact = Contact.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(contact = user_id)
+        rf = RF.objects.filter(contact = user_id)
+        finger = Finger.objects.filter(contact = user_id)
         return render(request, 'users/includes/own_user.html', locals())
 
 
 
     elif request.GET and "up" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        RunStart(user, "rf", "up", "no")
+        user_id = request.GET["user"]
+        user_id = user_id[5:]
+        RunStart(user_id, "rf", "up", "no")
         return HttpResponse("Нажмите на кнопку брелка рядом с приемником")
 
 
 
     elif request.GET and "down" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        RunStart(user, "rf", "down", "no")
+        user_id = request.GET["user"]
+        user_id = user_id[5:]
+        RunStart(user_id, "rf", "down", "no")
         return HttpResponse("Нажмите на кнопку брелка рядом с приемником")
 
 
@@ -162,28 +199,24 @@ def Run_rf(request):
 
 
     elif request.GET and "activ" == request.GET["cmd"]:
-        user = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
-        index = index[9:]
         RunActiv("rf", index)
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        contact = Contact.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(contact = user_id)
+        rf = RF.objects.filter(contact = user_id)
+        finger = Finger.objects.filter(contact = user_id)
         return render(request, 'users/includes/own_user.html', locals())
 
 
 
     elif request.GET and "delete" == request.GET["cmd"]:
-        user = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
-        index = index[3:]
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        contact = Contact.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(contact = user_id)
+        rf = RF.objects.filter(contact = user_id)
+        finger = Finger.objects.filter(contact = user_id)
         RunDelete("rf", index)
         return render(request, 'users/includes/own_user.html', locals())
 
@@ -216,9 +249,10 @@ def Run_rf(request):
 def Run_finger(request):
 
     if request.GET and "start" == request.GET["cmd"]:
-        user = request.GET["user"]
-        user = user[5:]
-        RunStart(user, "finger", "rec", "wait")
+        user_id = request.GET["user"]
+        user_id = user_id[5:]
+        FingerChangeVar("STATUS", "REC")
+        FingerChangeVar("STEP", "WAIT")
         return HttpResponse("Подождите")
 
 
@@ -230,28 +264,24 @@ def Run_finger(request):
 
 
     elif request.GET and "activ" == request.GET["cmd"]:
-        user = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
-        index = index[13:]
         RunActiv("finger", index)
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
-        return render(request, 'users/includes/own_user.html', locals())
+        contact = Contact.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(user = user_id)
+        finger = Finger.objects.filter(user = user_id)
+        return render(request, 'users/includes/user_activ.html', locals())
 
 
 
     elif request.GET and "delete" == request.GET["cmd"]:
-        user = request.GET["user"]
+        user_id = request.GET["user"]
         index = request.GET["index"]
-        user = user[5:]
-        index = index[7:]
-        contact = Contact.objects.get(id = user)
-        rfid = Rfid.objects.filter(contact = user)
-        rf = RF.objects.filter(contact = user)
-        finger = Finger.objects.filter(contact = user)
+        contact = Contact.objects.get(id = user_id)
+        rfid = Rfid.objects.filter(user = user_id)
+        #rf = RF.objects.filter(user = user_id)
+        finger = Finger.objects.filter(user = user_id)
         RunStart(user, "finger", "delete", "no")
         RunDelete("start", index)
         return render(request, 'users/includes/own_user.html', locals())
@@ -261,18 +291,18 @@ def Run_finger(request):
 
     elif request.GET and "check" == request.GET["cmd"]:
         status = Status.objects.get(comand = "run")
-        if status.status == "rec":
+        if FingerCheckVar("STATUS", "REC"):
             return HttpResponse('{"cmd": "rec", "step": "' + status.step + '"}')
-        elif status.status == "no":
+        elif FingerCheckVar("STATUS", "NO"):
             return HttpResponse('{"cmd": "no", "step": "' + status.step + '", "data": "' + RunRead() + '"}')
-        elif status.status == "time":
+        elif FingerCheckVar("STATUS", "TIME"):
             return HttpResponse('{"cmd": "time"}')
-        elif status.status == "save":
+        elif FingerCheckVar("STATUS", "SAVE"):
             return HttpResponse('{"cmd": "save"}')
-        elif status.status == "delete":
-            if status.step == "delete":
+        elif FingerCheckVar("STATUS", "DELETE"):
+            if FingerCheckVar("STEP", "DELETE"):
                 return HttpResponse('{"cmd": "delete", "step": "delete"}')
-            elif status.step == "ok":
+            elif FingerCheckVar("STEP", "OK"):
                 return HttpResponse('{"cmd": "delete", "step": "ok"}')
         else:
             return HttpResponse('{"cmd": "xxx", "???": "' + status.status + '"}')

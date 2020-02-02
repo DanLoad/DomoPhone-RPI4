@@ -3,7 +3,7 @@ from m_rfid.models import *
 from django.db.models import Q
 import time
 
-def RunAccess(value):
+def RfidAccess(value):
     list = Rfid.objects.filter(rfid = value)
     quantity = list.count()
     if quantity > 0:
@@ -12,7 +12,7 @@ def RunAccess(value):
         return False
 
 
-def RunSaveRfid(value):        # Сохранить RFID метку
+def RfidSave(value):        ## Сохранить RFID метку
     run = Var_rfid.objects.get(name = "USER")
     add = Rfid()
     add.rfid = value
@@ -21,7 +21,7 @@ def RunSaveRfid(value):        # Сохранить RFID метку
     return True
 
 
-def RunCheckRfid(value):   # Проверить есть ли в базе данных эта RFID метка
+def RfidCheck(value):   ## Проверить есть ли в базе данных эта RFID метка
         list = Rfid.objects.filter(rfid = value)
         quantity = list.count()
         if quantity == 0:
@@ -34,7 +34,7 @@ def RunCheckRfid(value):   # Проверить есть ли в базе дан
 
 
 
-def RunPrint(name, value, list):
+def RfidPrint(name, value, list):
     text = '<div style=\\"color:red\\">' + name + ': <br/>' + str(value) + "<br/>Принадлежит:"
     for uid in list:
          text = text + "<br/>" + uid.user.username + " " + uid.user.first_name
@@ -42,7 +42,7 @@ def RunPrint(name, value, list):
     return text
 
 
-def RunActiv(value):
+def RfidActiv(value):
     bool = Rfid.objects.get(id = value)
 
     if bool.activ:
@@ -52,7 +52,7 @@ def RunActiv(value):
     bool.save()
 
 
-def RunChangeVar(var, value):       # Изменить переменную в базе
+def RfidChangeVar(var, value):       # Изменить переменную в базе
     if var == "USER":
         status = Var_rfid.objects.filter(name = var)
         user = User.objects.get(id = value)
@@ -80,7 +80,7 @@ def RunChangeVar(var, value):       # Изменить переменную в �
             status.save()
 
 
-def RunCheckVar(var, value):        # Проверить переменную в базе
+def RfidCheckVar(var, value):        ## Проверить переменную в базе
     status = Var_rfid.objects.filter(name = var)
     quantity = status.count()
     if quantity == 0:
@@ -96,7 +96,8 @@ def RunCheckVar(var, value):        # Проверить переменную в
         else:
             return False
 
-def RunShowVar(var):        # Показать переменную из базы
+
+def RfidShowVar(var):        # Показать переменную из базы
     status = Var_rfid.objects.filter(name = var)
     quantity = status.count()
     if quantity == 0:
@@ -110,6 +111,6 @@ def RunShowVar(var):        # Показать переменную из баз�
         return status.value
 
 
-def RunDeleteRfid(value):
+def RfidDelete(value):
     rfid = Rfid.objects.get(id = value)
     rfid.delete()

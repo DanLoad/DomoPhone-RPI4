@@ -35,56 +35,56 @@ def Finger_loop():
 def Add_finger(ser):
     logging.info('Currently used templates: ' + str(ser.getTemplateCount()) +'/'+ str(ser.getStorageCapacity()))
     try:
-        place = RunFree()
+        place = FingerFree()
         if not place == "FULL":
-            RunChangeVar("STEP", "ONE")
-            while RunCheckVar("STATUS", "REC") & RunCheckVar("STEP", "ONE"):
+            FingerChangeVar("STEP", "ONE")
+            while FingerCheckVar("STATUS", "REC") & FingerCheckVar("STEP", "ONE"):
                 if ser.readImage():
                     ser.convertImage(0x01)
                     result = ser.searchTemplate()
                     positionNumber = result[0]
                     logging.info("Позиция ..." + str(positionNumber))
                     if positionNumber >= 0:
-                        if RunCheckValue("finger", positionNumber):
+                        if FingerCheckValue("finger", positionNumber):
                             print('Template already exists at position #' + str(positionNumber))
                             logging.info("Такой существует")
                             continue
                         else:
                             if ser.deleteTemplate(positionNumber):
-                                RunChangeVar("STATUS", "REC")
-                                RunChangeVar("STEP", "ONE")
+                                FingerChangeVar("STATUS", "REC")
+                                FingerChangeVar("STEP", "ONE")
                                 logging.info("Сначало удалил и...")
                                 continue
                             else:
-                                RunChangeVar("STATUS", "ERROR")
-                                RunChangeVar("STEP", "NO")
+                                FingerChangeVar("STATUS", "ERROR")
+                                FingerChangeVar("STEP", "NO")
                                 continue
-                    RunChangeVar("STEP", "REMOWE")
+                    FingerChangeVar("STEP", "REMOWE")
                     time.sleep(2)
                     logging.info('Waiting for same finger again...')
-                    RunChangeVar("STEP", "TWO")
-            while RunCheckVar("STATUS", "REC") & RunCheckVar("STEP", "TWO"):
+                    FingerChangeVar("STEP", "TWO")
+            while FingerCheckVar("STATUS", "REC") & FingerCheckVar("STEP", "TWO"):
                 if ser.readImage():
                     ser.convertImage(0x02)
                     if ( ser.compareCharacteristics() == 0 ):
-                        RunChangeVar("STATUS", "NOT_MATCH")
-                        RunChangeVar("STEP", "NO")
+                        FingerChangeVar("STATUS", "NOT_MATCH")
+                        FingerChangeVar("STEP", "NO")
                         continue
                     else:
                         ser.createTemplate()
                         positionNumber = ser.storeTemplate(place)
                         if positionNumber == place:
-                            RunSaveFinger(place)
+                            FingerSave(place)
                             logging.info("Палец сохранен в " + str(place))
                         else:
-                            RunChangeVar("STATUS", "NO")
-                            RunChangeVar("STEP", "ERROR")
+                            FingerChangeVar("STATUS", "NO")
+                            FingerChangeVar("STEP", "ERROR")
         else:
-            RunChangeVar("STATUS", "NO")
-            RunChangeVar("STEP", "FULL")
+            FingerChangeVar("STATUS", "NO")
+            FingerChangeVar("STEP", "FULL")
     except Exception as e:
-        RunChangeVar("STATUS", "NO")
-        RunChangeVar("STEP", "ERROR")
+        FingerChangeVar("STATUS", "NO")
+        FingerChangeVar("STEP", "ERROR")
         logging.info('Operation failed!')
         logging.info('Exception message: ' + str(e))
 
@@ -124,5 +124,5 @@ def Delete_finger(ser):
     number = int(run.number)
     if number >= 0:
         if ( uart.deleteTemplate(number) == True ):
-            RunDelete("finger", number)
+            FingerDelete("finger", number)
             RunChangeStatus("delete", "ok")

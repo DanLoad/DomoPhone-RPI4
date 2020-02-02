@@ -1,6 +1,8 @@
-<div id="block_user_info">
+<div class="block_menu">
   {% include "users/includes/info_name.html" %}
-  {% include "users/includes/info_rfid.html" %}
-  <!-- {% include "users/includes/info_rf.html" %} -->
-  <!-- {% include "users/includes/info_finger.html" %} -->
+  {% include "m_rfid/info_rfid.html" %}
+  {% include "m_finger/info_finger.html" %}
+  <div class="side_left">
+    <a href="/users/{{user_id}}" class="btn btn_menu">Изменить</a>
+  </div>
 </div>

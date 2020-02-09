@@ -38,7 +38,7 @@ static domain_name_servers=192.168.1.1
 
 Устанавливает pip, Apach2, mod wsgi:
 
-| $ | sudo apt-get install mc python3 python3-dev apache2 libapache2-mod-wsgi-py3 python3-pip samba samba-common-bin |
+| $ | sudo apt-get install mc python3 python3-dev apache2 libapache2-mod-wsgi-py3 python3-pip |
 |---|:-------------|
 | $ | sudo pip3 install django |
 
@@ -103,6 +103,11 @@ ServerName localhost
 Создаем проект:
 
 | $ | django-admin startproject DomoPhone |
+|---|:-------------|
+
+## Установка Samba
+
+| $ | sudo apt-get install samba samba-common-bin |
 |---|:-------------|
 
 Теперь настроим Samba. Для этого открываем файл конфигурации:

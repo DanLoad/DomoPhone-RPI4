@@ -122,16 +122,6 @@ ServerName localhost
 | $ | sudo a2ensite DomoPhone |
 | $ | sudo apachectl restart |
 
-Заходим в директорию в которой хотим создать проект:
-
-| $ | cd /var/www |
-|---|:-------------|
-
-Создаем проект:
-
-| $ | django-admin startproject DomoPhone |
-|---|:-------------|
-
 ## Установка Samba
 
 | $ | sudo apt-get install samba samba-common-bin |

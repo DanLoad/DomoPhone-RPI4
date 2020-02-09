@@ -42,6 +42,33 @@ static domain_name_servers=192.168.1.1
 |---|:-------------|
 | $ | sudo pip3 install django |
 
+Права:
+
+| $ | sudo chmod -R 777 /home |
+|---|:-------------|
+| $ | sudo chmod -R 777 /var/www |
+
+Зайдем в папку:
+
+| $ | cd /var/www |
+|---|:-------------|
+
+Создадим проект:
+
+| $ | django-admin.py startproject DomoPhone |
+|---|:-------------|
+
+Зайдем в папку проекта:
+
+| $ | cd /var/www/DomoPhone |
+|---|:-------------|
+
+Сделаем миграцию:
+
+| $ | python3 manage.py makemigrations |
+|---|:-------------|
+| $ | python3 manage.py migrate |
+
 Откроем файл:
 
 | $ | sudo nano /etc/apache2/apache2.conf |

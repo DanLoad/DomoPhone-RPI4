@@ -168,7 +168,7 @@ Guest ok = yes
 
 
 
-Настроим наш проект:
+## Настhjqrf WSGI в проекте:
 В wsgi.py вставить:
 
 
@@ -210,6 +210,13 @@ except Exception:
 ```python
 ALLOWED_HOSTS = ["192.168.1.101", "127.0.0.1", "127.0.1.1"]
 ```
+и там же внизу:
+
+```python
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/', '/static/')
+```
+
 
 ### Установка Celery
 

@@ -168,7 +168,7 @@ Guest ok = yes
 
 
 
-## Настhjqrf WSGI в проекте:
+## Настроить WSGI в проекте:
 В wsgi.py вставить:
 
 

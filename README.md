@@ -310,6 +310,22 @@ def xsum(numbers):
 |---|:-------------|
 | $ | celery -A DomoPhone worker -B -l INFO |
 
+## Установка Mosquitto
+
+| $ | sudo apt install mosquitto |
+|---|:-------------|
+| $ | sudo systemctl enable mosquitto.service |
+
+Узнаем порт:
+
+| $ | mosquitto -v |
+|---|:-------------|
+
+Узнаем IP:
+
+| $ | hostname -I |
+|---|:-------------|
+
 ## Установка библиотек:
 
 Библиотека для UART

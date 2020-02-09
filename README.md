@@ -281,7 +281,7 @@ from .celery import app as celery_app
 __all__ = ('celery_app',)
 ```
 
-Создать новый файл и добавить туда код DomoPhone/tasks.py:
+Создать новый файл в своем приложении и добавить туда код tasks.py:
 ```python
 # Create your tasks here
 from __future__ import absolute_import, unicode_literals

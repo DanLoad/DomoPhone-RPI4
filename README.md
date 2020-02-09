@@ -225,8 +225,9 @@ STATIC_ROOT = 'static/'
 
 ### Установка Celery
 
-| $ | sudo pip3 install Celery redis |
+| $ | sudo pip3 install celery redis |
 |---|:-------------|
+| $ | sudo apt-get install redis-server |
 
 Откройте файл настроек settings.py в вашем проекте Django
 Добавим связанные с Celery/Redis конфиги:
@@ -305,8 +306,9 @@ def xsum(numbers):
 
 Для проверки работы Celery:
 
-| $ | celery -A DomoPhone worker -B -l INFO |
+| $ | cd /var/www/DomoPhone |
 |---|:-------------|
+| $ | celery -A DomoPhone worker -B -l INFO |
 
 ## Установка библиотек:
 

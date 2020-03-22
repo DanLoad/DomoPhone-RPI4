@@ -46,11 +46,10 @@ static domain_name_servers=192.168.1.1
 
 | $ | sudo chmod -R 777 /home |
 |---|:-------------|
-| $ | sudo chmod -R 777 /var/www |
 
 Зайдем в папку:
 
-| $ | cd /var/www |
+| $ | cd /home |
 |---|:-------------|
 
 Создадим проект:
@@ -60,7 +59,7 @@ static domain_name_servers=192.168.1.1
 
 Зайдем в папку проекта:
 
-| $ | cd /var/www/DomoPhone |
+| $ | cd /home/DomoPhone |
 |---|:-------------|
 
 Сделаем миграцию:
@@ -93,23 +92,23 @@ ServerName localhost
 ```python
 <VirtualHost *:80>
  ServerName 192.168.1.101
- DocumentRoot /var/www/DomoPhone
- WSGIScriptAlias / /var/www/DomoPhone/DomoPhone/wsgi.py
+ DocumentRoot /home/DomoPhone
+ WSGIScriptAlias / /home/DomoPhone/DomoPhone/wsgi.py
 
  # adjust the following line to match your Python path
  WSGIDaemonProcess mysite.example.com processes=2 threads=15 display-name=%{GROUP}
-#python-home=/var/www/vhosts/mysite/venv/lib/python3.5
+#python-home=/home/vhosts/mysite/venv/lib/python3.5
  WSGIProcessGroup mysite.example.com
 
- <directory /var/www/DomoPhone>
+ <directory /home/DomoPhone>
    AllowOverride all
    Require all granted
    Options FollowSymlinks
  </directory>
 
- Alias /static/ /var/www/DomoPhone/static/
+ Alias /static/ /home/DomoPhone/static/
 
- <Directory /var/www/DomoPhone/static>
+ <Directory /home/DomoPhone/static>
   Require all granted
  </Directory>
 </VirtualHost>
@@ -148,7 +147,7 @@ Guest ok = yes
 
 Открываем доступ папкам:
 
-| $ | cd /var/www |
+| $ | cd /home |
 |---|:-------------|
 | $ | chmod 664 ./DomoPhone/db.sqlite3 |
 | $ | chmod 775 ./DomoPhone |
@@ -190,7 +189,7 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-sys.path.append('/var/www/DomoPhone')
+sys.path.append('/home/DomoPhone')
 # adjust the Python version in the line below as needed
 #sys.path.append('/usr/lib/python3.5/site-packages')
 

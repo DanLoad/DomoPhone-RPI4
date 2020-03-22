@@ -309,7 +309,39 @@ def xsum(numbers):
 |---|:-------------|
 | $ | celery -A DomoPhone worker -B -l INFO |
 
-## Установка Mosquitto
+### Установка Channels
+
+| $ | pip3 install channels |
+|---|:-------------|
+| $ | pip3 install asgi_redis |
+
+Добавим настройки:
+```python
+# Channels settings
+CHANNEL_LAYERS = {
+   "default": {
+       "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
+       "CONFIG": {
+           "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],  # set redis address
+       },
+       "ROUTING": "django_channels_celery_tutorial.routing.channel_routing",  # load routing from our routing.py file
+   },
+}
+```
+Создайте файл routing.py в дериктории настроек.
+
+```python
+from channels import route
+from jobs import consumers
+
+channel_routing = [
+   # Wire up websocket channels to our consumers:
+   route("websocket.connect", consumers.ws_connect),
+   route("websocket.receive", consumers.ws_receive),
+]
+```
+
+### Установка Mosquitto
 
 | $ | sudo apt install mosquitto |
 |---|:-------------|

@@ -162,7 +162,7 @@ Guest ok = yes
 
 | $ | sudo chmod -R 777 /home |
 |---|:-------------|
-| $ | sudo chmod -R 777 /var/www/log |
+| $ | sudo chmod -R 777 /var/log |
 
 
 

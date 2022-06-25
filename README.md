@@ -324,7 +324,7 @@ CHANNEL_LAYERS = {
        "CONFIG": {
            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],  # set redis address
        },
-       "ROUTING": "django_channels_celery_tutorial.routing.channel_routing",  # load routing from our routing.py file
+       "ROUTING": "DomoPhone.routing.channel_routing",  # load routing from our routing.py file
    },
 }
 ```
